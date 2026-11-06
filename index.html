@@ -25,6 +25,7 @@ button.d{border-color:var(--red);color:var(--red)}
 a.s{display:inline-block;text-decoration:none;padding:9px 12px;border:1px solid var(--green);color:var(--green);border-radius:8px;font:600 14px inherit;margin:6px 6px 0 0}
 .tabs{display:flex;gap:8px;margin-bottom:14px}
 .tabs button{flex:1;padding:10px;border:1px solid var(--line);background:#fff;border-radius:10px;font:600 15px inherit}
+.tabs button{font-size:14px;padding:10px 4px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.grid2 .card{margin:0}
 .tabs button.on{background:var(--green);color:#fff;border-color:var(--green)}
 .veh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .veh div{border:2px solid var(--line);border-radius:10px;padding:10px 4px;text-align:center;font-size:13px;cursor:pointer;background:#fff}
@@ -87,13 +88,13 @@ function render(){
   $("#out").hidden=!user;
   if(!user){return renderLogin()}
   var h='<div class="tabs">';
-  var t=user.role!=="driver"?[["book","Book delivery"],["mine","My deliveries"]]:[["jobs","Open requests"],["mine","My jobs"]];
+  var t=user.role!=="driver"?[["book","Book"],["mine","Deliveries"],["stats","Spending"]]:[["jobs","Requests"],["mine","Jobs"],["stats","Earnings"]];
   if(t.map(function(x){return x[0]}).indexOf(tab)<0)tab=t[0][0];
   t.forEach(function(x){h+='<button class="'+(tab===x[0]?"on":"")+'" data-t="'+x[0]+'">'+x[1]+'</button>'});
   h+='</div>';
   $("#app").innerHTML=h+'<div id="view"></div>';footer();
   document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){tab=b.dataset.t;render()}});
-  if(tab==="book")renderBook();else if(tab==="jobs")renderJobs();else renderMine();
+  if(tab==="book")renderBook();else if(tab==="jobs")renderJobs();else if(tab==="stats")renderStats();else renderMine();
 }
 
 var SUPPORT="";/* add your support phone or email here, e.g. "support@yourdomain.com" */
@@ -150,6 +151,35 @@ function renderLogin(){
   };
 }
 
+
+/* ---- Earnings (drivers) and spending (shops, wholesalers) ---- */
+function dayStart(d){var x=new Date(d);x.setHours(0,0,0,0);return x.getTime()}
+function renderStats(){
+  var drv=user.role==="driver",D=86400000,t0=dayStart(Date.now());
+  var done=rides.filter(function(r){return (drv?r.driverPhone===user.phone:r.shopPhone===user.phone)&&(r.status==="delivered"||r.status==="paid")&&r.offer});
+  function agg(from,to){var n=0,g=0;done.forEach(function(r){var t=r.deliveredAt||r.created;if(t>=from&&t<to){n++;g+=r.offer}});return{n:n,g:g,net:g*(1-FEE),fee:g*FEE}}
+  function amt(a){return "₹"+Math.round(drv?a.net:a.g)}
+  var P=[["Today",t0,t0+D],["Yesterday",t0-D,t0],["Last 7 days",t0-6*D,t0+D],["All time",0,t0+D]];
+  var h='<h2>'+(drv?"Your earnings":"Your spending")+'</h2><div class="grid2">';
+  P.forEach(function(p){var a=agg(p[1],p[2]);h+='<div class="card"><div class="mute">'+p[0]+'</div><div class="big">'+amt(a)+'</div><div class="mute">'+a.n+(a.n===1?" delivery":" deliveries")+'</div></div>'});
+  h+='</div>';
+  var all=agg(0,t0+D);
+  if(drv){
+    var due=0;done.forEach(function(r){if(!r.feePaid)due+=r.offer*FEE});
+    h+='<div class="card"><b>All time</b><div class="row" style="margin-top:8px"><span>Total delivery price</span><b>₹'+Math.round(all.g)+'</b></div><div class="row"><span>Platform fee (7%)</span><b>₹'+Math.round(all.fee)+'</b></div><div class="row"><span>You keep</span><b>₹'+Math.round(all.net)+'</b></div>'+(due>0?'<div class="fee">Platform fee still to pay: ₹'+Math.round(due)+'. Pay it from the Jobs tab.</div>':'')+'</div>';
+  }else{
+    h+='<div class="card"><b>All time</b><div class="row" style="margin-top:8px"><span>Total deliveries</span><b>'+all.n+'</b></div><div class="row"><span>Total paid to drivers</span><b>₹'+Math.round(all.g)+'</b></div></div>';
+  }
+  h+='<div class="card"><b>Last 7 days</b>';
+  for(var i=0;i<7;i++){
+    var a=agg(t0-i*D,t0-i*D+D),lab=i===0?"Today":i===1?"Yesterday":new Date(t0-i*D).toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"});
+    h+='<div class="row" style="margin-top:8px"><span>'+lab+'</span><span class="mute">'+a.n+(a.n===1?" delivery":" deliveries")+'</span><b>'+amt(a)+'</b></div>';
+  }
+  h+='</div>';
+  if(drv)h+='<p class="mute">Earnings are after the 7% platform fee. Only completed deliveries are counted.</p>';
+  if(!done.length)h+='<div class="empty">No completed deliveries yet. They will show here after the first delivery.</div>';
+  $("#view").innerHTML=h;
+}
 function renderBook(){
   var W=user.role==="wholesale";if(W&&!sel.pk&&user.store)sel.pk=user.store;
   var h='<h2>Book a delivery</h2><div class="card"><label>'+(W?"Pickup location (your godown or store)":"Pickup location (wholesale market / store)")+'</label><div class="pick empty" id="pkb"><div>📍</div><span>Search or pin pickup location</span><b>Select</b></div><label>'+(W?"Delivery location (retailer shop)":"Delivery location (your shop)")+'</label><div class="pick empty" id="drb"><div>🏪</div><span>Search or pin your shop location</span><b>Select</b></div><label>'+(W?"Retailer shop name and phone":"Shop name, floor or landmark (optional)")+'</label><input id="dl" placeholder="'+(W?"e.g. Maa Tarini Store, 98xxxxxxxx":"e.g. Maa Tarini Store, near temple")+'"><label>What are you carrying?</label><textarea id="gd" rows="2" placeholder="e.g. 20 bags rice, 10 cartons oil"></textarea><label>Vehicle</label><div class="veh">';
@@ -220,7 +250,7 @@ function act(a,id){
   if(a==="accept")r.status="accepted";
   if(a==="decline"){r.status="open";delete r.offer;delete r.driver;delete r.driverPhone}
   if(a==="picked")r.status="picked";
-  if(a==="delivered"){r.status="delivered";stopShare()}
+  if(a==="delivered"){r.status="delivered";r.deliveredAt=Date.now();stopShare()}
   if(a==="paid")r.status="paid";
   if(a==="feepaid")r.feePaid=true;
   if(a==="share")return startShare(r);
