@@ -58,10 +58,6 @@ footer .lk{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margi
 #pg h3{font:700 17px Georgia,serif;margin:18px 0 4px}
 #pg p,#pg li{font-size:15px;color:#33403a;margin:4px 0}
 .note{background:#fff7e6;border:1px solid #f2d9a8;border-radius:8px;padding:10px;font-size:13px;margin-top:16px}
-.pick{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;min-height:48px}
-.pick span{flex:1;font-size:15px}.pick.empty span{color:var(--mute)}.pick b{color:var(--green);font-size:13px}
-.cpin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);font-size:38px;z-index:500;pointer-events:none;filter:drop-shadow(0 3px 2px #0004)}
-#sr{max-height:34vh;overflow:auto;border-bottom:1px solid var(--line)}#sr div{padding:10px 12px;border-top:1px solid var(--line);font-size:14px;cursor:pointer}
 #ov{position:fixed;inset:0;background:#fff;z-index:99;display:flex;flex-direction:column}#map{flex:1;min-height:0}#info{padding:12px;border-top:1px solid var(--line)}#st{font:700 20px Georgia,serif}
 </style>
 </head>
@@ -76,12 +72,12 @@ var UPI="9583082524@fam",KEY_U="kg_user",KEY_R="kg_rides",FEE=0.07;
 var VEH=[{id:"auto",n:"Three-wheeler",e:"🛺"},{id:"tempo",n:"Tempo",e:"🛻"},{id:"truck",n:"Small truck",e:"🚚"}];
 function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-var user=load(KEY_U,null),rides=load(KEY_R,[]),sel={pk:null,dr:null},tab="book",veh="auto",watchId=null;
+var user=load(KEY_U,null),rides=load(KEY_R,[]),tab="book",veh="auto",watchId=null;
 var $=function(s){return document.querySelector(s)};
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function persist(){save(KEY_R,rides)}
 function vname(id){return VEH.filter(function(v){return v.id===id})[0].n}
-function mapDir(q,ll){return "https://www.google.com/maps/dir/?api=1&destination="+(ll?ll[0]+","+ll[1]:encodeURIComponent(q+", Bhubaneswar, Odisha"))}
+function mapDir(q){return "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(q+", Bhubaneswar, Odisha")}
 
 function render(){
   $("#out").hidden=!user;
@@ -151,22 +147,16 @@ function renderLogin(){
 }
 
 function renderBook(){
-  var h='<h2>Book a delivery</h2><div class="card"><label>Pickup location (wholesale market / store)</label><div class="pick empty" id="pkb"><div>📍</div><span>Search or pin pickup location</span><b>Select</b></div><label>Delivery location (your shop)</label><div class="pick empty" id="drb"><div>🏪</div><span>Search or pin your shop location</span><b>Select</b></div><label>Shop name, floor or landmark (optional)</label><input id="dl" placeholder="e.g. Maa Tarini Store, near temple"><label>What are you carrying?</label><textarea id="gd" rows="2" placeholder="e.g. 20 bags rice, 10 cartons oil"></textarea><label>Vehicle</label><div class="veh">';
+  var h='<h2>Book a delivery</h2><div class="card"><label>Pickup (wholesale market / store)</label><input id="pk" placeholder="e.g. Unit-1 Market, Bhubaneswar"><label>Deliver to (your shop address)</label><input id="dr" placeholder="Shop name, area, landmark"><label>What are you carrying?</label><textarea id="gd" rows="2" placeholder="e.g. 20 bags rice, 10 cartons oil"></textarea><label>Vehicle</label><div class="veh">';
   VEH.forEach(function(v){h+='<div data-v="'+v.id+'" class="'+(veh===v.id?"on":"")+'"><span>'+v.e+'</span>'+v.n+'</div>'});
   h+='</div><button class="p" id="bk">Find a driver</button><div class="mute" id="er" style="color:var(--red);margin-top:8px"></div></div><p class="mute">Drivers will send you their price. You accept the one you like.</p>';
   $("#view").innerHTML=h;
   document.querySelectorAll(".veh div").forEach(function(d){d.onclick=function(){veh=d.dataset.v;document.querySelectorAll(".veh div").forEach(function(x){x.classList.toggle("on",x===d)})}});
-  ["pk","dr"].forEach(function(w){
-    var b=$("#"+w+"b");
-    function paint(){if(sel[w]){b.classList.remove("empty");b.querySelector("span").textContent=sel[w].addr;b.querySelector("b").textContent="Change"}}
-    paint();
-    b.onclick=function(){pickLoc(w,function(p){sel[w]=p;paint()})};
-  });
   $("#bk").onclick=function(){
-    var gd=$("#gd").value.trim(),dl=$("#dl").value.trim();
-    if(!sel.pk||!sel.dr||!gd)return $("#er").textContent="Choose pickup and delivery locations, and enter the goods.";
-    rides.unshift({id:Date.now(),shop:user.name,shopPhone:user.phone,pickup:sel.pk.addr,pickupLL:[sel.pk.lat,sel.pk.lng],drop:(dl?dl+", ":"")+sel.dr.addr,dropLL:[sel.dr.lat,sel.dr.lng],goods:gd,vehicle:veh,status:"open",created:Date.now()});
-    persist();sel={pk:null,dr:null};tab="mine";render();
+    var pk=$("#pk").value.trim(),dr=$("#dr").value.trim(),gd=$("#gd").value.trim();
+    if(!pk||!dr||!gd)return $("#er").textContent="Fill pickup, shop address and goods.";
+    rides.unshift({id:Date.now(),shop:user.name,shopPhone:user.phone,pickup:pk,drop:dr,goods:gd,vehicle:veh,status:"open",created:Date.now()});
+    persist();tab="mine";render();
   };
 }
 
@@ -189,7 +179,7 @@ function renderMine(){
     }else{
       if(r.status==="offered")h+='<div class="mute">Your price ₹'+r.offer+'. Waiting for the shop to accept.</div>';
       if(r.status==="accepted"||r.status==="picked"){
-        h+='<div class="big">₹'+r.offer+'</div><div class="fee">Platform fee 7%: ₹'+(r.offer*FEE).toFixed(0)+'. You keep ₹'+(r.offer*(1-FEE)).toFixed(0)+'.</div><a class="s" href="tel:'+esc(r.shopPhone)+'">Call '+esc(r.shop)+'</a><button class="s g" data-a="nav" data-id="'+r.id+'">Start navigation</button><a class="s" target="_blank" rel="noopener" href="'+mapDir(r.status==="accepted"?r.pickup:r.drop,r.status==="accepted"?r.pickupLL:r.dropLL)+'">Open Google Maps</a><br>';
+        h+='<div class="big">₹'+r.offer+'</div><div class="fee">Platform fee 7%: ₹'+(r.offer*FEE).toFixed(0)+'. You keep ₹'+(r.offer*(1-FEE)).toFixed(0)+'.</div><a class="s" href="tel:'+esc(r.shopPhone)+'">Call '+esc(r.shop)+'</a><button class="s g" data-a="nav" data-id="'+r.id+'">Start navigation</button><a class="s" target="_blank" rel="noopener" href="'+mapDir(r.status==="accepted"?r.pickup:r.drop)+'">Open Google Maps</a><br>';
         h+=watchId===r.id?'<button class="s d" data-a="stop" data-id="'+r.id+'">Stop sharing location</button>':'<button class="s" data-a="share" data-id="'+r.id+'">Share live location</button>';
         h+=r.status==="accepted"?'<button class="s g" data-a="picked" data-id="'+r.id+'">Goods picked up</button>':'<button class="s g" data-a="delivered" data-id="'+r.id+'">Mark delivered</button>';
       }
@@ -246,9 +236,9 @@ function mkOv(title){
 }
 function openNav(r){
   if(!window.L)return alert("Map could not load. Check your internet and try again.");
-  var toPick=r.status==="accepted",addr=toPick?r.pickup:r.drop,ll=toPick?r.pickupLL:r.dropLL;
+  var toPick=r.status==="accepted",addr=toPick?r.pickup:r.drop;
   mkOv("Navigate to "+(toPick?"pickup":"shop"));
-  $("#info").innerHTML='<div class="mute">'+esc(addr)+'</div><div id="st">Finding your location…</div><a class="s" target="_blank" rel="noopener" href="'+mapDir(addr,ll)+'">Turn-by-turn in Google Maps</a>';
+  $("#info").innerHTML='<div class="mute">'+esc(addr)+'</div><div id="st">Finding your location…</div><a class="s" target="_blank" rel="noopener" href="'+mapDir(addr)+'">Turn-by-turn in Google Maps</a>';
   var me=null,dest=null,line=null,meMk=null,last=0,first=true;
   function st(t){var e=$("#st");if(e)e.textContent=t}
   function tryRoute(){
@@ -262,7 +252,8 @@ function openNav(r){
       st((rt.distance/1000).toFixed(1)+" km · "+Math.max(1,Math.round(rt.duration/60))+" min");
     }).catch(function(){st("Route unavailable. Use Google Maps.")});
   }
-  (ll?Promise.resolve([{lat:ll[0],lon:ll[1]}]):fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(addr+", Bhubaneswar, Odisha")).then(function(x){return x.json()})).then(function(j){
+  fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(addr+", Bhubaneswar, Odisha"))
+  .then(function(x){return x.json()}).then(function(j){
     if(!j.length)return st("Address not found on map. Use Google Maps.");
     dest=[+j[0].lat,+j[0].lon];if(map)L.marker(dest).addTo(map).bindPopup(esc(addr));tryRoute();
   }).catch(function(){st("Address lookup failed. Use Google Maps.")});
@@ -287,53 +278,6 @@ function trackDriver(r){
     var e=$("#st");if(e)e.textContent=esc(x.driver||"Driver")+" is on the way";
   }
   upd();navTimer=setInterval(upd,3000);
-}
-
-/* ---- Location picker: search, current location, move map under a fixed pin ---- */
-function shortAddr(n){return String(n||"").split(",").slice(0,4).join(",").trim()}
-function pickLoc(which,cb){
-  if(!window.L)return alert("Map could not load. Check your internet and try again.");
-  closeOv();var o=document.createElement("div");o.id="ov";
-  o.innerHTML='<div class="row" style="padding:10px 12px;background:var(--green);color:#fff;align-items:center"><b>'+(which==="pk"?"Pickup location":"Delivery location")+'</b><button class="s" id="cl" style="margin:0">Close</button></div><div style="padding:10px"><input id="q" placeholder="Search area, market or landmark" autocomplete="off"></div><div id="sr"></div><div style="position:relative;flex:1;min-height:0"><div id="map" style="position:absolute;inset:0"></div><div class="cpin">📍</div></div><div id="info"><div class="mute" id="ad">Move the map to place the pin on the exact spot.</div><button class="s" id="me">Use my current location</button><button class="p" id="ok" style="margin-top:8px">Confirm location</button></div>';
-  document.body.appendChild(o);$("#cl").onclick=closeOv;
-  var cur=sel[which],t1=null,t2=null;
-  var c0=cur?[cur.lat,cur.lng]:[20.2961,85.8245];
-  map=L.map("map",{zoomControl:false}).setView(c0,cur?17:13);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
-  function ad(t){var e=$("#ad");if(e)e.textContent=t}
-  map.on("moveend",function(){
-    clearTimeout(t1);ad("Finding address…");
-    t1=setTimeout(function(){
-      if(!map)return;var c=map.getCenter();
-      fetch("https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&lat="+c.lat+"&lon="+c.lng)
-      .then(function(x){return x.json()}).then(function(j){
-        if(!map)return;cur={lat:c.lat,lng:c.lng,addr:shortAddr(j.display_name)||("Pinned location "+c.lat.toFixed(4)+", "+c.lng.toFixed(4))};ad(cur.addr);
-      }).catch(function(){cur={lat:c.lat,lng:c.lng,addr:"Pinned location "+c.lat.toFixed(4)+", "+c.lng.toFixed(4)};ad(cur.addr)});
-    },500);
-  });
-  map.fire("moveend");
-  $("#q").oninput=function(){
-    clearTimeout(t2);var v=this.value.trim();
-    if(v.length<3){$("#sr").innerHTML="";return}
-    t2=setTimeout(function(){
-      fetch("https://nominatim.openstreetmap.org/search?format=json&limit=6&countrycodes=in&viewbox=84.4,21.6,87.6,19.2&q="+encodeURIComponent(v))
-      .then(function(x){return x.json()}).then(function(j){
-        var sr=$("#sr");if(!sr)return;
-        sr.innerHTML=j.length?"":'<div class="mute">No match. Try a nearby landmark or move the pin on the map.</div>';
-        j.forEach(function(p){var d=document.createElement("div");d.textContent=shortAddr(p.display_name);d.onclick=function(){sr.innerHTML="";$("#q").value="";if(map)map.setView([+p.lat,+p.lon],17)};sr.appendChild(d)});
-      }).catch(function(){var sr=$("#sr");if(sr)sr.innerHTML='<div class="mute">Search failed. Check your internet.</div>'});
-    },600);
-  };
-  function here(silent){
-    if(!navigator.geolocation)return silent||alert("Location is not available on this device.");
-    navigator.geolocation.getCurrentPosition(function(p){if(map)map.setView([p.coords.latitude,p.coords.longitude],17)},function(){if(!silent)alert("Allow location access in your browser to use your current location.")},{enableHighAccuracy:true,timeout:10000});
-  }
-  $("#me").onclick=function(){here(false)};
-  if(!cur)here(true);
-  $("#ok").onclick=function(){
-    if(!cur||!cur.addr||$("#ad").textContent==="Finding address…")return alert("Wait for the address to load, then confirm.");
-    cb(cur);closeOv();
-  };
 }
 $("#out").onclick=function(){user=null;try{localStorage.removeItem(KEY_U)}catch(e){}render()};
 window.addEventListener("storage",function(){rides=load(KEY_R,[]);if(user)render()});
