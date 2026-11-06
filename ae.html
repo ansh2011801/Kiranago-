@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KiranaGo – Wholesale to shop delivery</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+:root{--ink:#1b2a22;--bg:#f6f4ee;--card:#fff;--green:#1f6b45;--saffron:#f29a1d;--mute:#6b766f;--line:#e2ded3;--red:#b3402f}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.45 "Trebuchet MS",Verdana,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--green);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+header b{font:700 22px Georgia,serif;letter-spacing:.3px}
+header b i{color:var(--saffron);font-style:normal}
+header button{background:none;border:1px solid #ffffff88;color:#fff;border-radius:8px;padding:6px 10px}
+main{max-width:560px;margin:0 auto;padding:16px}
+h2{font:700 22px Georgia,serif;margin:6px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
+input,textarea,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+button.p{width:100%;margin-top:14px;padding:13px;border:0;border-radius:10px;background:var(--saffron);color:#2a1a00;font:700 16px inherit;cursor:pointer}
+button.s{padding:9px 12px;border:1px solid var(--green);background:#fff;color:var(--green);border-radius:8px;font:600 14px inherit;cursor:pointer;margin:6px 6px 0 0}
+button.g{background:var(--green);color:#fff}
+button.d{border-color:var(--red);color:var(--red)}
+a.s{display:inline-block;text-decoration:none;padding:9px 12px;border:1px solid var(--green);color:var(--green);border-radius:8px;font:600 14px inherit;margin:6px 6px 0 0}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;padding:10px;border:1px solid var(--line);background:#fff;border-radius:10px;font:600 15px inherit}
+.tabs button{font-size:14px;padding:10px 4px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.grid2 .card{margin:0}
+.tabs button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.veh{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.veh div{border:2px solid var(--line);border-radius:10px;padding:10px 4px;text-align:center;font-size:13px;cursor:pointer;background:#fff}
+.veh div.on{border-color:var(--green);background:#e8f3ec}
+.veh span{font-size:26px;display:block}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;background:#fdeccb;color:#7a4a00}
+.tag.ok{background:#d9efe2;color:var(--green)}
+.row{display:flex;justify-content:space-between;gap:8px}
+.mute{color:var(--mute);font-size:14px}
+.big{font:700 20px Georgia,serif}
+.empty{text-align:center;color:var(--mute);padding:28px 8px}
+.login{margin-top:30px}
+.fee{background:#fff7e6;border:1px dashed var(--saffron);border-radius:8px;padding:8px;font-size:14px;margin-top:8px}
+header{position:sticky;top:0;z-index:5;box-shadow:0 2px 8px #0002}
+.logo{display:flex;align-items:center;gap:10px}
+.mark{width:34px;height:34px;border-radius:9px;background:var(--saffron);display:grid;place-items:center;font-size:19px}
+.card{box-shadow:0 1px 3px #1b2a2210}
+.hero{background:var(--green);color:#fff;margin:-16px -16px 18px;padding:28px 18px 30px}
+.hero h1{font:700 29px/1.15 Georgia,serif;margin:0 0 10px}
+.hero p{margin:0;color:#e3f1e9;font-size:16px}
+.steps{display:grid;gap:10px;margin:6px 0 18px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step b.n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--saffron);color:#2a1a00;display:grid;place-items:center;font-size:14px}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px;color:var(--ink)}
+.chk input{width:20px;height:20px;margin:1px 0 0;flex:none}
+.chk a,footer a{color:var(--green);font-weight:700;cursor:pointer;text-decoration:underline}
+footer{max-width:560px;margin:8px auto 28px;padding:0 16px;text-align:center;color:var(--mute);font-size:13px}
+footer .lk{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin-bottom:8px}
+#pg{position:fixed;inset:0;background:#fff;z-index:120;display:flex;flex-direction:column}
+#pg .bd{flex:1;overflow:auto;padding:16px;max-width:620px;width:100%;margin:0 auto}
+#pg h3{font:700 17px Georgia,serif;margin:18px 0 4px}
+#pg p,#pg li{font-size:15px;color:#33403a;margin:4px 0}
+.note{background:#fff7e6;border:1px solid #f2d9a8;border-radius:8px;padding:10px;font-size:13px;margin-top:16px}
+.pick{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;min-height:48px}
+.pick span{flex:1;font-size:15px}.pick.empty span{color:var(--mute)}.pick b{color:var(--green);font-size:13px}
+.cpin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);font-size:38px;z-index:500;pointer-events:none;filter:drop-shadow(0 3px 2px #0004)}
+#sr{max-height:34vh;overflow:auto;border-bottom:1px solid var(--line)}#sr div{padding:10px 12px;border-top:1px solid var(--line);font-size:14px;cursor:pointer}
+#ov{position:fixed;inset:0;background:#fff;z-index:99;display:flex;flex-direction:column}#map{flex:1;min-height:0}#info{padding:12px;border-top:1px solid var(--line)}#st{font:700 20px Georgia,serif}
+</style>
+</head>
+<body>
+<header><div class="logo"><div class="mark">🚚</div><b>Kirana<i>Go</i></b></div><button id="out" hidden>Log out</button></header>
+<main id="app"></main>
+<footer id="ft"></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+/* ---- Storage (demo mode: this device only). To go live, replace load()/save() with Supabase calls. ---- */
+var UPI="9583082524@fam",KEY_U="kg_user",KEY_R="kg_rides",FEE=0.07;
+var VEH=[{id:"auto",n:"Auto / goods auto",e:"🛺"},{id:"tempo",n:"Tempo / mini goods",e:"🛻"},{id:"pickup",n:"Pickup truck",e:"🚙"},{id:"mini_truck",n:"Mini truck",e:"🚚"},{id:"truck",n:"Large truck",e:"🚛"}];
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var user=load(KEY_U,null),rides=load(KEY_R,[]),sel={pk:null,dr:null},tab="book",veh="auto",watchId=null;
+var $=function(s){return document.querySelector(s)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function persist(){save(KEY_R,rides)}
+function vname(id){var v=VEH.filter(function(v){return v.id===id})[0];return v?v.n:"Vehicle not specified"}
+function mapDir(q,ll){return "https://www.google.com/maps/dir/?api=1&destination="+(ll?ll[0]+","+ll[1]:encodeURIComponent(q+", Bhubaneswar, Odisha"))}
+
+function render(){
+  $("#out").hidden=!user;
+  if(!user){return renderLogin()}
+  var h='<div class="tabs">';
+  var t=user.role!=="driver"?[["book","Book"],["mine","Deliveries"],["stats","Spending"]]:[["profile","Driver profile"],["jobs","Requests"],["mine","Jobs"],["stats","Earnings"]];
+  if(t.map(function(x){return x[0]}).indexOf(tab)<0)tab=t[0][0];
+  t.forEach(function(x){h+='<button class="'+(tab===x[0]?"on":"")+'" data-t="'+x[0]+'">'+x[1]+'</button>'});
+  h+='</div>';
+  $("#app").innerHTML=h+'<div id="view"></div>';footer();
+  document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){tab=b.dataset.t;render()}});
+  if(tab==="book")renderBook();else if(tab==="jobs")renderJobs();else if(tab==="profile")renderDriverProfile();else if(tab==="stats")renderStats();else renderMine();
+}
+
+var SUPPORT="";/* add your support phone or email here, e.g. "support@yourdomain.com" */
+var DOCS={
+about:["About KiranaGo",`<p><b>KiranaGo</b> is a delivery booking platform for Odisha. It helps wholesalers and retail shop owners (kirana stores) move goods from wholesale markets and godowns to shops, using local three-wheelers, tempos and small trucks.</p>
+<h3>Why we exist</h3><p>Small shop owners lose time and money arranging transport from the wholesale market. Local drivers often have empty trips. KiranaGo connects the two directly, so shops get a fair price and drivers get more work.</p>
+<h3>How it works</h3><ul><li>A wholesaler or a shop enters the pickup place, the delivery address and the goods, and picks a vehicle.</li><li>Verified drivers complete their personal, licence and vehicle profile, then see requests matching their vehicle and send their own price.</li><li>The shop accepts the price it likes. The driver collects the goods and navigates to the shop.</li><li>The shop pays the driver after delivery.</li></ul>
+<h3>What KiranaGo is not</h3><p>KiranaGo does not buy or sell goods. It is only a booking platform between shops and drivers. We start in Bhubaneswar and plan to grow across Odisha.</p>`],
+terms:["Terms and Conditions",`<p>Last updated: November 2026. By creating an account or using KiranaGo you agree to these terms.</p>
+<h3>1. Our role</h3><p>KiranaGo is a technology platform that connects wholesalers and shop owners (together, "Shops") with independent drivers ("Drivers"). KiranaGo does not own vehicles, does not employ Drivers and does not transport goods itself. The delivery agreement is between the Shop and the Driver.</p>
+<h3>2. Accounts</h3><p>You must give a correct name and a working mobile number. You are responsible for all activity under your account. You must be 18 years or older.</p>
+<h3>3. Booking and price</h3><p>A Shop posts a delivery request. Drivers set their own price. The Shop is free to accept or decline. Once a Shop accepts a price, both sides should keep to it.</p>
+<h3>4. Payment</h3><p>The Shop pays the Driver directly after the goods are delivered, in cash or by UPI. KiranaGo does not hold the delivery money.</p>
+<h3>5. Platform fee</h3><p>The Driver pays KiranaGo a platform fee of 7% of the agreed delivery price for each completed delivery. The fee is paid through the UPI option in the app after delivery. Fees may change, and we will tell users before a change applies.</p>
+<h3>6. Goods and conduct</h3><ul><li>Do not send illegal, stolen, hazardous or banned goods.</li><li>Drivers must carry goods safely, drive legally and hold a valid licence and vehicle papers.</li><li>Shops must describe the goods and quantity honestly.</li><li>No abuse, fraud, fake bookings or misuse of other users' details.</li></ul>
+<h3>7. Location</h3><p>Drivers can share live location during a job so the Shop can track the delivery. Location is used only for navigation and tracking.</p>
+<h3>8. Damage, loss and disputes</h3><p>Shops and Drivers are responsible for the goods and vehicle during delivery. Any damage, loss or payment dispute should be settled between them. KiranaGo may help by sharing booking details, but is not liable for such losses to the extent allowed by law.</p>
+<h3>9. Suspension</h3><p>We may suspend or remove accounts that break these terms or harm other users.</p>
+<h3>10. Changes and law</h3><p>We may update these terms. Continued use means you accept the update. These terms follow the laws of India. Courts in Bhubaneswar, Odisha have jurisdiction.</p>
+<div class="note">This is a starting draft. Please have a lawyer review it before you launch publicly.</div>`],
+privacy:["Privacy Policy",`<p>We collect only what the service needs.</p>
+<h3>What we collect</h3><ul><li>Your name, mobile number and role (Shop or Driver).</li><li>Booking details: pickup, shop address, goods, vehicle and price.</li><li>A Driver's live location while a job is active and location sharing is on.</li></ul>
+<h3>How we use it</h3><p>To match Shops with Drivers, show routes and tracking, and run the platform fee. A Shop and its Driver can see each other's name and phone number for the booking.</p>
+<h3>What we do not do</h3><p>We do not sell your data. We do not track Drivers when location sharing is off.</p>
+<h3>Your control</h3><p>You can log out any time and stop location sharing from the job screen. You can ask us to delete your account data.</p>
+<div class="note">This is a starting draft. Have it reviewed before public launch.</div>`],
+help:["Help and FAQ",`<h3>How do I book?</h3><p>Open Book delivery, fill pickup, shop address and goods, choose a vehicle, then tap Find a driver.</p>
+<h3>Who sets the price?</h3><p>The driver. You see the price and choose to accept or decline.</p>
+<h3>When do I pay?</h3><p>After delivery, directly to the driver.</p>
+<h3>What is the 7% fee?</h3><p>Drivers pay KiranaGo 7% of the agreed price after each delivery. Shops do not pay any extra fee.</p>
+<h3>How do I track my delivery?</h3><p>Open My deliveries and tap Track driver live once the driver is on the way.</p>
+<h3>Navigation is not working</h3><p>Allow location access in your phone browser settings, and check your internet.</p>`+(SUPPORT?'<h3>Contact</h3><p>'+esc(SUPPORT)+'</p>':'')]
+};
+function showDoc(k){
+  var d=DOCS[k];if(!d)return;var o=$("#pg");if(o)o.remove();
+  o=document.createElement("div");o.id="pg";
+  o.innerHTML='<div class="row" style="padding:10px 12px;background:var(--green);color:#fff;align-items:center"><b>'+d[0]+'</b><button class="s" id="pgx" style="margin:0">Close</button></div><div class="bd">'+d[1]+'</div>';
+  document.body.appendChild(o);$("#pgx").onclick=function(){o.remove()};
+}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-doc]");if(t){e.preventDefault();showDoc(t.dataset.doc)}});
+function footer(){$("#ft").innerHTML='<div class="lk"><a data-doc="about">About</a><a data-doc="terms">Terms</a><a data-doc="privacy">Privacy</a><a data-doc="help">Help</a></div>© 2026 KiranaGo · Made in Odisha'}
+
+function renderLogin(){
+  $("#app").innerHTML='<div class="hero"><h1>Wholesale goods to your shop, same day.</h1><p>KiranaGo connects Odisha shop owners with local drivers. Book a three-wheeler, tempo or small truck from the wholesale market. The driver quotes the price and you pay after delivery.</p></div>'+
+  '<h2>How it works</h2><div class="steps"><div class="step"><b class="n">1</b><div><b>Book</b><div class="mute">Enter pickup market, your shop address and goods.</div></div></div><div class="step"><b class="n">2</b><div><b>Get a price</b><div class="mute">Drivers send their price. Accept the one you like.</div></div></div><div class="step"><b class="n">3</b><div><b>Track and pay</b><div class="mute">Use GPS navigation and follow the driver on the map. Pay after delivery.</div></div></div></div>'+
+  '<div class="card"><h2 style="margin-top:0">Get started</h2><label>Your name</label><input id="nm" autocomplete="name"><label>Mobile number</label><input id="ph" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel"><label>I am a</label><select id="rl"><option value="shop">Retail shop owner</option><option value="wholesale">Wholesaler</option><option value="driver">Driver</option></select><label class="chk"><input type="checkbox" id="tc"><span>I am 18 or older and agree to the <a data-doc="terms">Terms and Conditions</a> and <a data-doc="privacy">Privacy Policy</a>.</span></label><button class="p" id="go">Continue</button><div class="mute" id="er" style="color:var(--red);margin-top:8px"></div></div>';
+  footer();
+  $("#go").onclick=function(){
+    var n=$("#nm").value.trim(),p=$("#ph").value.trim();
+    if(n.length<2)return $("#er").textContent="Enter your name.";
+    if(!/^[6-9]\d{9}$/.test(p))return $("#er").textContent="Enter a valid 10-digit mobile number.";
+    if(!$("#tc").checked)return $("#er").textContent="Please accept the Terms and Privacy Policy to continue.";
+    user={name:n,phone:p,role:$("#rl").value,agreed:Date.now()};save(KEY_U,user);tab=user.role!=="driver"?"book":(user.driverProfile&&user.driverProfile.complete?"jobs":"profile");render();
+  };
+}
+
+
+/* ---- Driver partner profile: saved on this device in this starter build ---- */
+function renderDriverProfile(){
+ var d=user.driverProfile||{};
+ var h='<h2>Driver partner registration</h2><p class="mute">Complete and keep these details accurate. Only share valid documents. Do not enter Aadhaar number, bank PIN, OTP or passwords here.</p><div class="card"><h3>Personal details</h3><label>Full legal name</label><input id="dp_name" value="'+esc(d.fullName||user.name)+'" autocomplete="name"><label>Mobile number</label><input value="'+esc(user.phone)+'" disabled><label>Date of birth</label><input id="dp_dob" type="date" value="'+esc(d.dob||'')+'"><label>Current address</label><textarea id="dp_address" rows="2">'+esc(d.address||'')+'</textarea><label>Emergency contact name</label><input id="dp_emergency_name" value="'+esc(d.emergencyName||'')+'"><label>Emergency contact mobile</label><input id="dp_emergency_phone" type="tel" inputmode="numeric" maxlength="10" value="'+esc(d.emergencyPhone||'')+'"></div>';
+ h+='<div class="card"><h3>Vehicle details</h3><label>Vehicle category</label><select id="dp_vehicle">'+VEH.map(function(v){return '<option value="'+v.id+'" '+(d.vehicleType===v.id?'selected':'')+'>'+v.e+' '+v.n+'</option>'}).join('')+'</select><label>Vehicle make / brand</label><input id="dp_make" placeholder="e.g. Tata, Mahindra, Piaggio" value="'+esc(d.make||'')+'"><label>Model</label><input id="dp_model" value="'+esc(d.model||'')+'"><label>Registration number</label><input id="dp_reg" autocapitalize="characters" placeholder="OD-02-AB-1234" value="'+esc(d.registration||'')+'"><label>Manufacturing year</label><input id="dp_year" type="number" min="1990" max="'+new Date().getFullYear()+'" value="'+esc(d.year||'')+'"><label>Load capacity (kg)</label><input id="dp_capacity" type="number" min="1" value="'+esc(d.capacity||'')+'"><label>Vehicle ownership</label><select id="dp_owner"><option value="self" '+(d.owner==='self'?'selected':'')+'>Owned by me</option><option value="family" '+(d.owner==='family'?'selected':'')+'>Family-owned (permission available)</option><option value="rented" '+(d.owner==='rented'?'selected':'')+'>Rented / leased (permission available)</option></select></div>';
+ h+='<div class="card"><h3>Driving and vehicle documents</h3><label>Driving licence number</label><input id="dp_dl" autocapitalize="characters" value="'+esc(d.licence||'')+'"><label>Driving licence expiry date</label><input id="dp_dl_exp" type="date" value="'+esc(d.licenceExpiry||'')+'"><label>RC expiry date (if applicable)</label><input id="dp_rc_exp" type="date" value="'+esc(d.rcExpiry||'')+'"><label>Insurance expiry date</label><input id="dp_ins_exp" type="date" value="'+esc(d.insuranceExpiry||'')+'"><label>Fitness certificate expiry (if applicable)</label><input id="dp_fit_exp" type="date" value="'+esc(d.fitnessExpiry||'')+'"><label>Goods permit expiry (if applicable)</label><input id="dp_permit_exp" type="date" value="'+esc(d.permitExpiry||'')+'"><label>Service area / operating town</label><input id="dp_area" placeholder="e.g. Patia, Bhubaneswar" value="'+esc(d.area||'')+'"><label>Document verification status</label><div class="note">Documents are not uploaded or verified by this starter file. An administrator must securely verify the original licence, RC, insurance and required permits before activating a driver.</div><label class="chk"><input id="dp_declare" type="checkbox" '+(d.declared?'checked':'')+'><span>I confirm these details are true, I am legally eligible to drive this vehicle, and the vehicle has valid required documents.</span></label><button class="p" id="dp_save">Save driver details</button><div id="dp_error" class="mute" style="color:var(--red)"></div></div>';
+ h+='<div class="card"><b>Saved profile</b><div class="mute">'+(d.complete?'Profile details saved on this device only. This starter build does not sync this profile to Supabase. Complete official document verification before accepting live work.':'Profile not completed yet.')+'</div></div>';
+ $("#view").innerHTML=h;
+ $("#dp_save").onclick=function(){
+  var val=function(id){return $("#"+id).value.trim()};
+  var dob=val('dp_dob'),age=dob?Math.floor((Date.now()-new Date(dob).getTime())/31557600000):0;
+  var req=['dp_name','dp_dob','dp_address','dp_emergency_name','dp_emergency_phone','dp_make','dp_model','dp_reg','dp_year','dp_capacity','dp_dl','dp_dl_exp','dp_ins_exp','dp_area'];
+  for(var i=0;i<req.length;i++){if(!val(req[i])){$("#dp_error").textContent='Please complete all required fields.';$("#"+req[i]).focus();return}}
+  if(age<18){$("#dp_error").textContent='Driver partners must be at least 18 years old.';return}
+  if(!/^[6-9]\d{9}$/.test(val('dp_emergency_phone'))){$("#dp_error").textContent='Enter a valid 10-digit emergency contact number.';return}
+  if(new Date(val('dp_dl_exp'))<new Date(new Date().toDateString())||new Date(val('dp_ins_exp'))<new Date(new Date().toDateString())){$("#dp_error").textContent='Driving licence and insurance must be currently valid.';return}
+  if(!$("#dp_declare").checked){$("#dp_error").textContent='Please confirm the declaration.';return}
+  user.driverProfile={fullName:val('dp_name'),dob:dob,address:val('dp_address'),emergencyName:val('dp_emergency_name'),emergencyPhone:val('dp_emergency_phone'),vehicleType:val('dp_vehicle'),make:val('dp_make'),model:val('dp_model'),registration:val('dp_reg').toUpperCase(),year:val('dp_year'),capacity:val('dp_capacity'),owner:val('dp_owner'),licence:val('dp_dl').toUpperCase(),licenceExpiry:val('dp_dl_exp'),rcExpiry:val('dp_rc_exp'),insuranceExpiry:val('dp_ins_exp'),fitnessExpiry:val('dp_fit_exp'),permitExpiry:val('dp_permit_exp'),area:val('dp_area'),declared:true,complete:true,savedAt:Date.now()};
+  save(KEY_U,user);veh=user.driverProfile.vehicleType;tab='jobs';render();
+ };
+}
+
+/* ---- Earnings (drivers) and spending (shops, wholesalers) ---- */
+function dayStart(d){var x=new Date(d);x.setHours(0,0,0,0);return x.getTime()}
+function renderStats(){
+  var drv=user.role==="driver",D=86400000,t0=dayStart(Date.now());
+  var done=rides.filter(function(r){return (drv?r.driverPhone===user.phone:r.shopPhone===user.phone)&&(r.status==="delivered"||r.status==="paid")&&r.offer});
+  function agg(from,to){var n=0,g=0;done.forEach(function(r){var t=r.deliveredAt||r.created;if(t>=from&&t<to){n++;g+=r.offer}});return{n:n,g:g,net:g*(1-FEE),fee:g*FEE}}
+  function amt(a){return "₹"+Math.round(drv?a.net:a.g)}
+  var P=[["Today",t0,t0+D],["Yesterday",t0-D,t0],["Last 7 days",t0-6*D,t0+D],["All time",0,t0+D]];
+  var h='<h2>'+(drv?"Your earnings":"Your spending")+'</h2><div class="grid2">';
+  P.forEach(function(p){var a=agg(p[1],p[2]);h+='<div class="card"><div class="mute">'+p[0]+'</div><div class="big">'+amt(a)+'</div><div class="mute">'+a.n+(a.n===1?" delivery":" deliveries")+'</div></div>'});
+  h+='</div>';
+  var all=agg(0,t0+D);
+  if(drv){
+    var due=0;done.forEach(function(r){if(!r.feePaid)due+=r.offer*FEE});
+    h+='<div class="card"><b>All time</b><div class="row" style="margin-top:8px"><span>Total delivery price</span><b>₹'+Math.round(all.g)+'</b></div><div class="row"><span>Platform fee (7%)</span><b>₹'+Math.round(all.fee)+'</b></div><div class="row"><span>You keep</span><b>₹'+Math.round(all.net)+'</b></div>'+(due>0?'<div class="fee">Platform fee still to pay: ₹'+Math.round(due)+'. Pay it from the Jobs tab.</div>':'')+'</div>';
+  }else{
+    h+='<div class="card"><b>All time</b><div class="row" style="margin-top:8px"><span>Total deliveries</span><b>'+all.n+'</b></div><div class="row"><span>Total paid to drivers</span><b>₹'+Math.round(all.g)+'</b></div></div>';
+  }
+  h+='<div class="card"><b>Last 7 days</b>';
+  for(var i=0;i<7;i++){
+    var a=agg(t0-i*D,t0-i*D+D),lab=i===0?"Today":i===1?"Yesterday":new Date(t0-i*D).toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"});
+    h+='<div class="row" style="margin-top:8px"><span>'+lab+'</span><span class="mute">'+a.n+(a.n===1?" delivery":" deliveries")+'</span><b>'+amt(a)+'</b></div>';
+  }
+  h+='</div>';
+  if(drv)h+='<p class="mute">Earnings are after the 7% platform fee. Only completed deliveries are counted.</p>';
+  if(!done.length)h+='<div class="empty">No completed deliveries yet. They will show here after the first delivery.</div>';
+  $("#view").innerHTML=h;
+}
+function renderBook(){
+  var W=user.role==="wholesale";if(W&&!sel.pk&&user.store)sel.pk=user.store;
+  var h='<h2>Book a delivery</h2><div class="card"><label>'+(W?"Pickup location (your godown or store)":"Pickup location (wholesale market / store)")+'</label><div class="pick empty" id="pkb"><div>📍</div><span>Search or pin pickup location</span><b>Select</b></div><label>'+(W?"Delivery location (retailer shop)":"Delivery location (your shop)")+'</label><div class="pick empty" id="drb"><div>🏪</div><span>Search or pin your shop location</span><b>Select</b></div><label>'+(W?"Retailer shop name and phone":"Shop name, floor or landmark (optional)")+'</label><input id="dl" placeholder="'+(W?"e.g. Maa Tarini Store, 98xxxxxxxx":"e.g. Maa Tarini Store, near temple")+'"><label>What are you carrying?</label><textarea id="gd" rows="2" placeholder="e.g. 20 bags rice, 10 cartons oil"></textarea><label>Vehicle</label><div class="veh">';
+  VEH.forEach(function(v){h+='<div data-v="'+v.id+'" class="'+(veh===v.id?"on":"")+'"><span>'+v.e+'</span>'+v.n+'</div>'});
+  h+='</div><button class="p" id="bk">Find a driver</button><div class="mute" id="er" style="color:var(--red);margin-top:8px"></div></div><p class="mute">Drivers will send you their price. You accept the one you like.</p>';
+  $("#view").innerHTML=h;
+  document.querySelectorAll(".veh div").forEach(function(d){d.onclick=function(){veh=d.dataset.v;document.querySelectorAll(".veh div").forEach(function(x){x.classList.toggle("on",x===d)})}});
+  ["pk","dr"].forEach(function(w){
+    var b=$("#"+w+"b");
+    function paint(){if(sel[w]){b.classList.remove("empty");b.querySelector("span").textContent=sel[w].addr;b.querySelector("b").textContent="Change"}}
+    paint();
+    b.onclick=function(){pickLoc(w,function(p){sel[w]=p;paint()})};
+  });
+  $("#bk").onclick=function(){
+    var gd=$("#gd").value.trim(),dl=$("#dl").value.trim();
+    if(!sel.pk||!sel.dr||!gd)return $("#er").textContent="Choose pickup and delivery locations, and enter the goods.";
+    rides.unshift({id:Date.now(),shop:user.name,shopPhone:user.phone,pickup:sel.pk.addr,pickupLL:[sel.pk.lat,sel.pk.lng],drop:(dl?dl+", ":"")+sel.dr.addr,dropLL:[sel.dr.lat,sel.dr.lng],goods:gd,vehicle:veh,status:"open",created:Date.now()});
+    if(W){user.store=sel.pk;save(KEY_U,user)}persist();sel={pk:null,dr:null};tab="mine";render();
+  };
+}
+
+function feeBlock(r){var f=(r.offer*FEE).toFixed(0);if(r.feePaid)return '<div class="fee">Platform fee ₹'+f+' paid. Thank you.</div>';return '<div class="fee">Pay platform fee ₹'+f+' (7%) to KiranaGo by UPI.</div><a class="s g" style="background:var(--green);color:#fff" href="upi://pay?pa='+UPI+'&pn=KiranaGo&am='+f+'&cu=INR&tn=KiranaGo%20fee%20'+r.id+'">Pay ₹'+f+' by UPI</a><button class="s" data-a="feepaid" data-id="'+r.id+'">I paid the fee</button>'}
+function badge(s){var m={open:"Waiting for driver",offered:"Price offered",accepted:"Driver confirmed",picked:"On the way",delivered:"Delivered",paid:"Paid"};return '<span class="tag '+(s==="delivered"||s==="paid"?"ok":"")+'">'+m[s]+'</span>'}
+function rideInfo(r){return '<div class="row"><b>'+esc(vname(r.vehicle))+'</b>'+badge(r.status)+'</div><div class="mute">From: '+esc(r.pickup)+'</div><div class="mute">To: '+esc(r.drop)+'</div><div>'+esc(r.goods)+'</div>'}
+
+function renderMine(){
+  var mine=rides.filter(function(r){return user.role!=="driver"?r.shopPhone===user.phone:r.driverPhone===user.phone});
+  if(!mine.length){$("#view").innerHTML='<div class="empty">'+(user.role!=="driver"?"No deliveries yet. Book your first one.":"No jobs yet. Send a price on an open request.")+'</div>';return}
+  var h="";
+  mine.forEach(function(r){
+    h+='<div class="card">'+rideInfo(r);
+    if(user.role!=="driver"){
+      if(r.status==="offered")h+='<div class="big">₹'+r.offer+'</div><div class="mute">Offer from '+esc(r.driver)+' ('+esc(r.driverPhone)+')</div><button class="s g" data-a="accept" data-id="'+r.id+'">Accept price</button><button class="s d" data-a="decline" data-id="'+r.id+'">Decline</button>';
+      if(r.status==="accepted"||r.status==="picked"){h+='<div class="big">₹'+r.offer+'</div><div class="mute">Driver: '+esc(r.driver)+'</div><a class="s" href="tel:'+esc(r.driverPhone)+'">Call driver</a>';
+        h+=r.loc?'<button class="s g" data-a="track" data-id="'+r.id+'">Track driver live</button>':'<div class="mute">Live location appears when the driver starts sharing.</div>'}
+      if(r.status==="delivered")h+='<div class="big">₹'+r.offer+'</div><div class="mute">Pay the driver now (cash or UPI).</div><button class="s g" data-a="paid" data-id="'+r.id+'">I paid the driver</button>';
+      if(r.status==="paid")h+='<div class="mute">Paid ₹'+r.offer+' to '+esc(r.driver)+'.</div>';
+    }else{
+      if(r.status==="offered")h+='<div class="mute">Your price ₹'+r.offer+'. Waiting for the shop to accept.</div>';
+      if(r.status==="accepted"||r.status==="picked"){
+        h+='<div class="big">₹'+r.offer+'</div><div class="fee">Platform fee 7%: ₹'+(r.offer*FEE).toFixed(0)+'. You keep ₹'+(r.offer*(1-FEE)).toFixed(0)+'.</div><a class="s" href="tel:'+esc(r.shopPhone)+'">Call '+esc(r.shop)+'</a><button class="s g" data-a="nav" data-id="'+r.id+'">Start navigation</button><a class="s" target="_blank" rel="noopener" href="'+mapDir(r.status==="accepted"?r.pickup:r.drop,r.status==="accepted"?r.pickupLL:r.dropLL)+'">Open Google Maps</a><br>';
+        h+=watchId===r.id?'<button class="s d" data-a="stop" data-id="'+r.id+'">Stop sharing location</button>':'<button class="s" data-a="share" data-id="'+r.id+'">Share live location</button>';
+        h+=r.status==="accepted"?'<button class="s g" data-a="picked" data-id="'+r.id+'">Goods picked up</button>':'<button class="s g" data-a="delivered" data-id="'+r.id+'">Mark delivered</button>';
+      }
+      if(r.status==="delivered")h+='<div class="mute">Waiting for the shop to confirm payment.</div>'+feeBlock(r);
+      if(r.status==="paid")h+=feeBlock(r);
+    }
+    h+='</div>';
+  });
+  $("#view").innerHTML=h;
+  document.querySelectorAll("[data-a]").forEach(function(b){b.onclick=function(){act(b.dataset.a,+b.dataset.id)}});
+}
+
+function renderJobs(){
+  if(!user.driverProfile||!user.driverProfile.complete){tab="profile";render();return}var open=rides.filter(function(r){return r.status==="open"&&r.vehicle===user.driverProfile.vehicleType});
+  var h='<div class="card"><b>Your registered vehicle:</b> '+esc(vname(user.driverProfile.vehicleType))+' · '+esc(user.driverProfile.registration)+'<div class="mute">'+esc(user.driverProfile.make+" "+user.driverProfile.model)+' · '+esc(user.driverProfile.capacity)+' kg capacity</div></div>';
+  if(!open.length){$("#view").innerHTML=h+'<div class="empty">No open requests matching your registered vehicle right now. Check again soon.</div>';return}
+  open.forEach(function(r){h+='<div class="card">'+rideInfo(r)+'<div class="mute">Shop: '+esc(r.shop)+'</div><label>Your price (₹)</label><input type="number" min="1" inputmode="numeric" id="pr'+r.id+'"><button class="s g" data-a="offer" data-id="'+r.id+'">Send price</button></div>'});
+  $("#view").innerHTML=h;
+  document.querySelectorAll("[data-a]").forEach(function(b){b.onclick=function(){act(b.dataset.a,+b.dataset.id)}});
+}
+
+function act(a,id){
+  var r=rides.filter(function(x){return x.id===id})[0];if(!r)return;
+  if(a==="nav")return openNav(r);
+  if(a==="track")return trackDriver(r);
+  if(a==="offer"){var v=+$("#pr"+id).value;if(!(v>0))return alert("Enter a price.");r.offer=Math.round(v);r.driver=user.name;r.driverPhone=user.phone;r.status="offered";tab="mine"}
+  if(a==="accept")r.status="accepted";
+  if(a==="decline"){r.status="open";delete r.offer;delete r.driver;delete r.driverPhone}
+  if(a==="picked")r.status="picked";
+  if(a==="delivered"){r.status="delivered";r.deliveredAt=Date.now();stopShare()}
+  if(a==="paid")r.status="paid";
+  if(a==="feepaid")r.feePaid=true;
+  if(a==="share")return startShare(r);
+  if(a==="stop"){stopShare();return render()}
+  persist();render();
+}
+function startShare(r){
+  if(!navigator.geolocation)return alert("Location is not available on this device.");
+  watchId=r.id;
+  navigator.geolocation.watchPosition(function(p){r.loc={lat:p.coords.latitude,lng:p.coords.longitude};persist()},function(){alert("Allow location access to share your position.");watchId=null;render()},{enableHighAccuracy:true});
+  render();
+}
+function stopShare(){watchId=null}
+
+/* ---- In-site map and navigation (Leaflet + OpenStreetMap + OSRM routing) ---- */
+var map=null,navWatch=null,navTimer=null;
+function closeOv(){if(navWatch!=null&&navigator.geolocation)navigator.geolocation.clearWatch(navWatch);navWatch=null;clearInterval(navTimer);if(map){map.remove();map=null}var o=$("#ov");if(o)o.remove()}
+function mkOv(title){
+  closeOv();var o=document.createElement("div");o.id="ov";
+  o.innerHTML='<div class="row" style="padding:10px 12px;background:var(--green);color:#fff;align-items:center"><b>'+title+'</b><button class="s" id="cl" style="margin:0">Close</button></div><div id="map"></div><div id="info"></div>';
+  document.body.appendChild(o);$("#cl").onclick=closeOv;
+  map=L.map("map").setView([20.2961,85.8245],12);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+}
+function openNav(r){
+  if(!window.L)return alert("Map could not load. Check your internet and try again.");
+  var toPick=r.status==="accepted",addr=toPick?r.pickup:r.drop,ll=toPick?r.pickupLL:r.dropLL;
+  mkOv("Navigate to "+(toPick?"pickup":"shop"));
+  $("#info").innerHTML='<div class="mute">DESTINATION · '+esc(addr)+'</div><div id="st">Finding your location…</div><button class="s" id="followMap">Follow my location: ON</button><a class="s" target="_blank" rel="noopener" href="'+mapDir(addr,ll)+'">Open full turn-by-turn navigation</a>';
+  var me=null,dest=null,line=null,meMk=null,destMk=null,last=0,first=true,follow=true;
+  function st(t){var e=$("#st");if(e)e.textContent=t}
+  $("#followMap").onclick=function(){follow=!follow;this.textContent="Follow my location: "+(follow?"ON":"OFF");if(follow&&me&&map)map.setView(me,16)};
+  function tryRoute(){
+    if(!me||!dest||Date.now()-last<20000)return;last=Date.now();
+    fetch("https://router.project-osrm.org/route/v1/driving/"+me[1]+","+me[0]+";"+dest[1]+","+dest[0]+"?overview=full&geometries=geojson")
+    .then(function(x){return x.json()}).then(function(j){
+      var rt=j.routes&&j.routes[0];if(!rt||!map)return st("No road route found. Use Google Maps.");
+      if(line)map.removeLayer(line);
+      line=L.polyline(rt.geometry.coordinates.map(function(c){return[c[1],c[0]]}),{color:"#1f6b45",weight:6}).addTo(map);
+      if(first){map.fitBounds(line.getBounds(),{padding:[30,30]});first=false}
+      st("Route: "+(rt.distance/1000).toFixed(1)+" km · estimated "+Math.max(1,Math.round(rt.duration/60))+" min. Follow GPS and obey road signs.");
+    }).catch(function(){st("Route unavailable. Use Google Maps.")});
+  }
+  (ll?Promise.resolve([{lat:ll[0],lon:ll[1]}]):fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(addr+", Bhubaneswar, Odisha")).then(function(x){return x.json()})).then(function(j){
+    if(!j.length)return st("Address not found on map. Use Google Maps.");
+    dest=[+j[0].lat,+j[0].lon];if(map){destMk=L.marker(dest).addTo(map).bindPopup("Delivery destination").openPopup()}tryRoute();
+  }).catch(function(){st("Address lookup failed. Use Google Maps.")});
+  if(!navigator.geolocation)return st("Location is not available on this device.");
+  navWatch=navigator.geolocation.watchPosition(function(p){
+    me=[p.coords.latitude,p.coords.longitude];r.loc={lat:me[0],lng:me[1]};persist();
+    if(!map)return;
+    if(!meMk)meMk=L.circleMarker(me,{radius:9,color:"#fff",weight:3,fillColor:"#2563eb",fillOpacity:1}).addTo(map);else meMk.setLatLng(me);
+    if(!dest&&first)map.setView(me,15);else if(follow&&dest&&map)map.panTo(me);
+    tryRoute();
+  },function(){st("Allow location access to start navigation.")},{enableHighAccuracy:true,maximumAge:3000,timeout:15000});
+}
+function trackDriver(r){
+  if(!window.L)return alert("Map could not load. Check your internet and try again.");
+  mkOv("Driver live location");var mk=null,done=false;
+  $("#info").innerHTML='<div id="st">Waiting for driver location…</div>';
+  function upd(){
+    rides=load(KEY_R,rides);var x=rides.filter(function(q){return q.id===r.id})[0];
+    if(!x||!x.loc||!map)return;var p=[x.loc.lat,x.loc.lng];
+    if(!mk)mk=L.marker(p).addTo(map);else mk.setLatLng(p);
+    if(!done){map.setView(p,15);done=true}else map.panTo(p);
+    var e=$("#st");if(e)e.textContent=esc(x.driver||"Driver")+" is on the way";
+  }
+  upd();navTimer=setInterval(upd,3000);
+}
+
+/* ---- Location picker: search, current location, move map under a fixed pin ---- */
+function shortAddr(n){return String(n||"").split(",").slice(0,4).join(",").trim()}
+function pickLoc(which,cb){
+  if(!window.L)return alert("Map could not load. Check your internet and try again.");
+  closeOv();var o=document.createElement("div");o.id="ov";
+  o.innerHTML='<div class="row" style="padding:10px 12px;background:var(--green);color:#fff;align-items:center"><b>'+(which==="pk"?"Pickup location":"Delivery location")+'</b><button class="s" id="cl" style="margin:0">Close</button></div><div style="padding:10px"><input id="q" placeholder="Search area, market or landmark" autocomplete="off"></div><div id="sr"></div><div style="position:relative;flex:1;min-height:0"><div id="map" style="position:absolute;inset:0"></div><div class="cpin">📍</div></div><div id="info"><div class="mute" id="ad">Move the map to place the pin on the exact spot.</div><button class="s" id="me">Use my current location</button><button class="p" id="ok" style="margin-top:8px">Confirm location</button></div>';
+  document.body.appendChild(o);$("#cl").onclick=closeOv;
+  var cur=sel[which],t1=null,t2=null;
+  var c0=cur?[cur.lat,cur.lng]:[20.2961,85.8245];
+  map=L.map("map",{zoomControl:false}).setView(c0,cur?17:13);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+  function ad(t){var e=$("#ad");if(e)e.textContent=t}
+  map.on("moveend",function(){
+    clearTimeout(t1);ad("Finding address…");
+    t1=setTimeout(function(){
+      if(!map)return;var c=map.getCenter();
+      fetch("https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&lat="+c.lat+"&lon="+c.lng)
+      .then(function(x){return x.json()}).then(function(j){
+        if(!map)return;cur={lat:c.lat,lng:c.lng,addr:shortAddr(j.display_name)||("Pinned location "+c.lat.toFixed(4)+", "+c.lng.toFixed(4))};ad(cur.addr);
+      }).catch(function(){cur={lat:c.lat,lng:c.lng,addr:"Pinned location "+c.lat.toFixed(4)+", "+c.lng.toFixed(4)};ad(cur.addr)});
+    },500);
+  });
+  map.fire("moveend");
+  $("#q").oninput=function(){
+    clearTimeout(t2);var v=this.value.trim();
+    if(v.length<3){$("#sr").innerHTML="";return}
+    t2=setTimeout(function(){
+      fetch("https://nominatim.openstreetmap.org/search?format=json&limit=6&countrycodes=in&viewbox=84.4,21.6,87.6,19.2&q="+encodeURIComponent(v))
+      .then(function(x){return x.json()}).then(function(j){
+        var sr=$("#sr");if(!sr)return;
+        sr.innerHTML=j.length?"":'<div class="mute">No match. Try a nearby landmark or move the pin on the map.</div>';
+        j.forEach(function(p){var d=document.createElement("div");d.textContent=shortAddr(p.display_name);d.onclick=function(){sr.innerHTML="";$("#q").value="";if(map)map.setView([+p.lat,+p.lon],17)};sr.appendChild(d)});
+      }).catch(function(){var sr=$("#sr");if(sr)sr.innerHTML='<div class="mute">Search failed. Check your internet.</div>'});
+    },600);
+  };
+  function here(silent){
+    if(!navigator.geolocation)return silent||alert("Location is not available on this device.");
+    navigator.geolocation.getCurrentPosition(function(p){if(map)map.setView([p.coords.latitude,p.coords.longitude],17)},function(){if(!silent)alert("Allow location access in your browser to use your current location.")},{enableHighAccuracy:true,timeout:10000});
+  }
+  $("#me").onclick=function(){here(false)};
+  if(!cur)here(true);
+  $("#ok").onclick=function(){
+    if(!cur||!cur.addr||$("#ad").textContent==="Finding address…")return alert("Wait for the address to load, then confirm.");
+    cb(cur);closeOv();
+  };
+}
+$("#out").onclick=function(){user=null;try{localStorage.removeItem(KEY_U)}catch(e){}render()};
+window.addEventListener("storage",function(){rides=load(KEY_R,[]);if(user)render()});
+render();
+</script>
+</body>
+</html>
