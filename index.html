@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f7a3d'/%3E%3Cpath d='M10 22h28v18H10zM38 28h10l6 7v5H38z' fill='%23fff'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%23fff' stroke='%231f7a3d' stroke-width='3'/%3E%3Ccircle cx='46' cy='44' r='5' fill='%23fff' stroke='%231f7a3d' stroke-width='3'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#1f7a3d">
+<title>KiranaGo – Wholesale Grocery Delivery Booking in Bhubaneswar, Odisha</title>
+<meta name="description" content="KiranaGo helps kirana shop owners in Bhubaneswar, Odisha book an auto, tempo or small truck to bring wholesale goods to their shop. Drivers get new delivery jobs.">
+<link rel="canonical" href="https://kiranin.netlify.app/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="KiranaGo – Wholesale Delivery Booking, Odisha">
+<meta property="og:description" content="Book a tempo, auto or small truck for wholesale grocery delivery in Bhubaneswar.">
+<meta property="og:url" content="https://kiranin.netlify.app/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"KiranaGo","alternateName":"KiranaGo Odisha","url":"https://kiranin.netlify.app/"}</script>
+<style>
+:root{--bg:#f6f7f4;--card:#fff;--tx:#1b2a1f;--mu:#667568;--pr:#1f7a3d;--pt:#fff;--bd:#dfe5dc;--wa:#b26a00;--er:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#121a14;--card:#1b261e;--tx:#e8efe9;--mu:#9aab9d;--pr:#4cc274;--pt:#08210f;--bd:#2c3b30;--wa:#f0b04a;--er:#ff8a80}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:14px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+h1{font-size:20px;margin:0}h2{font-size:17px;margin:0 0 10px}.sub{color:var(--mu);font-size:13px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+input,select{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+button{font:inherit;border:0;border-radius:10px;padding:11px 14px;background:var(--pr);color:var(--pt);font-weight:600;cursor:pointer}
+button.alt{background:transparent;color:var(--tx);border:1px solid var(--bd)}button.sm{padding:8px 12px;font-size:14px}
+.row,.tabs,.stat{display:flex;gap:8px}.row>*,.tabs button,.stat div{flex:1}
+.fare{font-size:22px;font-weight:700;color:var(--pr);margin:12px 0 4px}
+.b{border-top:1px solid var(--bd);padding-top:10px;margin-top:10px}.b:first-child{border:0;margin:0;padding:0}
+.tag{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--bd);color:var(--wa);font-weight:600;white-space:nowrap}
+.tag.done{color:var(--pr)}.tag.cancelled{color:var(--er)}.acts{display:flex;gap:8px;margin-top:8px}
+.stat div{text-align:center;background:var(--bg);border-radius:10px;padding:8px}.stat b{display:block;font-size:18px}.hide{display:none}
+.logo{display:flex;gap:10px;align-items:center}.logo svg{width:40px;height:40px;flex:none}
+.spin{width:22px;height:22px;border:3px solid var(--bd);border-top-color:var(--pr);border-radius:50%;animation:sp 1s linear infinite;margin:6px auto}@keyframes sp{to{transform:rotate(360deg)}}
+.steps{display:flex;gap:4px;margin:8px 0 2px}.steps i{flex:1;height:5px;border-radius:3px;background:var(--bd)}.steps i.on{background:var(--pr)}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);max-width:420px;width:92%;padding:16px}dialog::backdrop{background:#0008}
+.wa{position:fixed;right:14px;bottom:14px;background:#25d366;color:#08210f;border-radius:99px;padding:11px 16px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px #0004}
+footer{padding:4px 0 70px}details{margin:6px 0}summary{cursor:pointer;font-weight:600;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1f7a3d"/><path d="M10 22h28v18H10zM38 28h10l6 7v5H38z" fill="#fff"/><circle cx="20" cy="44" r="5" fill="#fff" stroke="#1f7a3d" stroke-width="3"/><circle cx="46" cy="44" r="5" fill="#fff" stroke="#1f7a3d" stroke-width="3"/></svg><div><h1>KiranaGo Odisha</h1><div class="sub">Wholesale to your shop, one booking</div></div></div><button id="out" class="alt sm hide">Logout</button></header>
+<div id="app"><div class="card"><div class="spin"></div><div class="sub" style="text-align:center">Loading…</div></div></div>
+<section class="card" style="margin-top:12px"><h2>About KiranaGo</h2>
+<p class="sub">KiranaGo is a booking website for kirana and retail shop owners in Bhubaneswar, Odisha. Pick up goods from the wholesale market, book an auto, tempo or small truck in one tap, and pay the driver after delivery. Drivers with an auto, tempo or small truck can join to get new wholesale delivery jobs near them.</p></section>
+<footer>
+<details><summary>Contact us</summary><p class="sub" id="ctc"></p></details>
+<details><summary>Terms of use</summary><p class="sub">KiranaGo connects shop owners with drivers. The fare shown is for the trip and is paid to the driver after delivery. Please check your goods at delivery. KiranaGo is not responsible for damage or disputes between users.</p></details>
+<details><summary>Privacy</summary><p class="sub">We keep your email, name, mobile number and booking details only to run the service. A shop and a driver see each other's name and phone only for an accepted booking. We do not sell your data.</p></details>
+</footer>
+</div>
+<dialog id="dlg"></dialog>
+<a id="wa" class="wa hide" target="_blank" rel="noopener">WhatsApp help</a>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL="https://tffpodxjhffekufdvqnb.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_-jhzsVRx1bU08g0SRmrADg_La3YR1Ce";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+const MARKETS=["Unit-1 Wholesale Market, Bhubaneswar","Rasulgarh Mandi","Baramunda Mandi","Pahala / Mancheswar Godown Area","Cuttack Chhatra Bazar"];
+const VEH={auto:{n:"Auto / 3-wheeler",base:250,cap:"up to 300 kg"},tempo:{n:"Tempo (Tata Ace)",base:450,cap:"up to 750 kg"},truck:{n:"Small truck",base:800,cap:"up to 2 tonnes"}};
+const DIST={1:["Within 5 km",1],2:["5 to 10 km",1.5],3:["10 to 20 km",2.2]};
+const ST={requested:"Looking for driver",accepted:"Driver accepted",onway:"On the way",delivered:"Delivered",cancelled:"Cancelled"};
+const COMM=0.10;
+const SUPPORT_PHONE="",SUPPORT_EMAIL=""; // e.g. SUPPORT_PHONE="919876543210"
+const SI={requested:0,accepted:1,onway:2,delivered:3};
+const $=s=>document.querySelector(s);
+const dlg=h=>{$("#dlg").innerHTML=h;$("#dlg").showModal()};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rs=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const fareOf=(v,d)=>VEH[v].base*DIST[d][1];
+let user=null,prof=null,list=[],step="email",email="",role="shop",chan=null;
+
+async function boot(){
+  const {data}=await sb.auth.getSession();
+  await setUser(data.session&&data.session.user);
+  sb.auth.onAuthStateChange((_e,s)=>{const u=s&&s.user;if((u&&u.id)!==(user&&user.id))setUser(u)});
+}
+async function setUser(u){
+  user=u||null;prof=null;list=[];
+  if(user){
+    const {data}=await sb.from("profiles").select("*").eq("id",user.id).maybeSingle();
+    prof=data;
+    if(prof){await load();if(chan)sb.removeChannel(chan);
+      chan=sb.channel("b").on("postgres_changes",{event:"*",schema:"public",table:"bookings"},load).subscribe()}
+  }
+  render();
+}
+async function load(){const {data}=await sb.from("bookings").select("*").order("created_at",{ascending:false}).limit(200);list=data||[];render()}
+
+async function sendCode(){
+  email=$("#em").value.trim().toLowerCase();
+  if(!/^\S+@\S+\.\S+$/.test(email)){alert("Enter a valid email.");return}
+  const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname}});
+  if(error){alert(error.message);return}
+  step="code";render();
+}
+async function verify(){
+  const token=$("#cd").value.trim();
+  const {error}=await sb.auth.verifyOtp({email,token,type:"email"});
+  if(error)alert("Wrong or expired code.");else step="email";
+}
+async function saveProfile(){
+  const name=$("#nm").value.trim(),phone=$("#ph").value.trim();
+  const row={id:user.id,role,name,phone,shop:role==="shop"?($("#sh").value.trim()||name):null,veh:role==="driver"?$("#vh").value:null,vno:role==="driver"?$("#vn").value.trim():null};
+  const {error}=await sb.from("profiles").insert(row);
+  if(error){alert("Check your name and 10-digit mobile number.");return}
+  setUser(user);
+}
+function book(){
+  const address=$("#ad").value.trim(),goods=$("#gd").value.trim(),kg=+$("#kg").value;
+  if(address.length<5||goods.length<3||!(kg>0)){alert("Please fill address, goods and weight.");return}
+  const v=$("#vc").value,d=$("#ds").value;
+  dlg(`<h2>Confirm booking</h2><div class="sub">Pick up</div><div>${esc($("#mk").value)}</div><div class="sub" style="margin-top:8px">Deliver to</div><div>${esc(address)}</div><div class="sub" style="margin-top:8px">Goods</div><div>${esc(goods)} · ${kg} kg</div><div class="sub" style="margin-top:8px">Vehicle</div><div>${VEH[v].n} · ${DIST[d][0]}</div><div class="fare">${rs(fareOf(v,d))}</div><div class="sub">Pay the driver after delivery.</div><div class="row" style="margin-top:12px"><button class="alt" onclick="$('#dlg').close()">Edit</button><button onclick="confirmBook()">Confirm</button></div>`);
+}
+async function confirmBook(){
+  const address=$("#ad").value.trim(),goods=$("#gd").value.trim(),kg=+$("#kg").value;
+  const {error}=await sb.from("bookings").insert({market:$("#mk").value,address,goods,kg,veh:$("#vc").value,dist:+$("#ds").value});
+  $("#dlg").close();
+  if(error){alert("Could not book: "+error.message);return}
+  $("#ad").value="";$("#gd").value="";load();
+}
+function receipt(id){
+  const b=list.find(x=>x.id===id);if(!b)return;
+  dlg(`<h2>Receipt #${esc(String(b.id).slice(0,8).toUpperCase())}</h2><div class="sub">${new Date(b.created_at).toLocaleString("en-IN")}</div><div class="b"><b>${esc(b.shop_name)}</b><div class="sub">${esc(b.address)}</div></div><div class="b">From: ${esc(b.market)}<br>${esc(b.goods)} · ${b.kg} kg<br>${VEH[b.veh].n}</div><div class="b">Driver: ${esc(b.driver_name||"-")} ${esc(b.vno||"")}</div><div class="fare">${rs(b.fare)}</div><div class="sub">Paid to driver after delivery (cash or UPI)</div><div style="margin-top:12px"><button style="width:100%" onclick="$('#dlg').close()">Close</button></div>`);
+}
+async function accept(id){const {error}=await sb.rpc("accept_booking",{bid:id});if(error)alert("Sorry, this request is no longer available.");load()}
+async function setS(id,s){const {error}=await sb.rpc("set_status",{bid:id,s});if(error)alert("Not allowed.");load()}
+$("#out").onclick=()=>sb.auth.signOut();
+
+function card(b,r){
+  const cls=b.status==="delivered"?"done":b.status==="cancelled"?"cancelled":"";
+  let a="";
+  if(r==="shop"&&b.status==="requested")a=`<button class="alt sm" onclick="setS('${b.id}','cancelled')">Cancel</button>`;
+  if(r==="driver"){
+    if(b.status==="requested")a=`<button class="sm" onclick="accept('${b.id}')">Accept ${rs(b.fare*(1-COMM))}</button>`;
+    else if(b.driver_id===user.id&&b.status==="accepted")a=`<button class="sm" onclick="setS('${b.id}','onway')">Start trip</button>`;
+    else if(b.driver_id===user.id&&b.status==="onway")a=`<button class="sm" onclick="setS('${b.id}','delivered')">Mark delivered</button>`;
+  }
+  if(b.status==="delivered")a=`<button class="alt sm" onclick="receipt('${b.id}')">Receipt</button>`;
+  const steps=b.status==="cancelled"?"":`<div class="steps">${[0,1,2,3].map(i=>`<i class="${i<=SI[b.status]?"on":""}"></i>`).join("")}</div>`;
+  const who=r==="driver"?(b.driver_id===user.id?`<a href="tel:${esc(b.shop_phone)}">Call shop ${esc(b.shop_phone)}</a>`:""):(b.driver_name?`Driver: ${esc(b.driver_name)}, ${esc(b.vno)} <a href="tel:${esc(b.driver_phone)}">Call</a>`:"");
+  return `<div class="b"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(b.market)}</b><span class="tag ${cls}">${ST[b.status]}</span></div>
+  ${steps}<div class="sub">To: ${esc(b.shop_name)}, ${esc(b.address)}</div><div>${esc(b.goods)} · ${b.kg} kg · ${VEH[b.veh].n}</div>
+  <div class="sub">Fare ${rs(b.fare)} · pay driver after delivery (cash or UPI)</div><div class="sub">${who}</div>${a?`<div class="acts">${a}</div>`:""}</div>`;
+}
+const opts=o=>Object.entries(o).map(([k,v])=>`<option value="${k}">${v.n||v[0]}${v.cap?" ("+v.cap+")":""}</option>`).join("");
+
+function viewAuth(){
+  return step==="email"
+  ?`<div class="card"><h2>Login or sign up</h2><label>Email</label><input id="em" type="email" autocomplete="email"><div class="sub" style="margin-top:6px">We email you a sign-in link. No password needed.</div><div style="margin-top:12px"><button style="width:100%" onclick="sendCode()">Send link</button></div></div>`
+  :`<div class="card"><h2>Check your email</h2><div class="sub">We sent a sign-in link to ${esc(email)}. Open the email on this phone and tap Sign in. Also check Spam.</div><div style="margin-top:12px"><button class="alt" onclick="step='email';render()">Use a different email</button></div></div>`;
+}
+function viewProfile(){
+  const d=role==="driver";
+  return `<div class="card"><h2>Tell us about you</h2><div class="tabs"><button class="${d?"alt":""}" onclick="role='shop';render()">I own a shop</button><button class="${d?"":"alt"}" onclick="role='driver';render()">I am a driver</button></div>
+  <label>Your name</label><input id="nm"><label>Mobile number</label><input id="ph" inputmode="numeric" maxlength="10">
+  ${d?`<label>Vehicle</label><select id="vh">${opts(VEH)}</select><label>Vehicle number</label><input id="vn" placeholder="OD 02 AB 1234">`:`<label>Shop name</label><input id="sh">`}
+  <div style="margin-top:14px"><button style="width:100%" onclick="saveProfile()">Continue</button></div></div>`;
+}
+function viewShop(){
+  const mine=list.filter(b=>b.shop_id===user.id);
+  return `<div class="card"><h2>Book a delivery</h2><label>Pick up from</label><select id="mk">${MARKETS.map(m=>`<option>${m}</option>`).join("")}</select>
+  <label>Deliver to (shop address)</label><input id="ad" placeholder="Shop, area, landmark"><label>Goods</label><input id="gd" placeholder="e.g. 20 bags rice, 10 cartons oil">
+  <div class="row"><div><label>Weight (kg)</label><input id="kg" type="number" min="1" value="100"></div><div><label>Distance</label><select id="ds">${opts(DIST)}</select></div></div>
+  <label>Vehicle</label><select id="vc">${opts(VEH)}</select><div class="fare" id="fr"></div><div class="sub">Estimated fare. Pay the driver after delivery.</div>
+  <div style="margin-top:12px"><button style="width:100%" onclick="book()">Book now</button></div></div>
+  <div class="card"><h2>My bookings</h2>${mine.length?mine.map(b=>card(b,"shop")).join(""):'<div class="sub">No bookings yet.</div>'}</div>`;
+}
+function viewDriver(){
+  const open=list.filter(b=>b.status==="requested"&&b.veh===prof.veh),mine=list.filter(b=>b.driver_id===user.id);
+  const done=mine.filter(b=>b.status==="delivered"),g=done.reduce((s,b)=>s+Number(b.fare),0);
+  return `<div class="card"><h2>Earnings</h2><div class="stat"><div><b>${done.length}</b><span class="sub">trips</span></div><div><b>${rs(g*(1-COMM))}</b><span class="sub">you earn</span></div><div><b>${rs(g*COMM)}</b><span class="sub">platform 10%</span></div></div></div>
+  <div class="card"><h2>New requests (${VEH[prof.veh].n})</h2>${open.length?open.map(b=>card(b,"driver")).join(""):'<div class="sub">No open requests right now.</div>'}</div>
+  <div class="card"><h2>My trips</h2>${mine.length?mine.map(b=>card(b,"driver")).join(""):'<div class="sub">Accepted trips show here.</div>'}</div>`;
+}
+function render(){
+  $("#out").classList.toggle("hide",!user);
+  const ids=["em","cd","nm","ph","sh","vn","mk","ad","gd","kg","ds","vc"],keep={};
+  ids.forEach(i=>{const e=$("#"+i);if(e)keep[i]=e.value});
+  const fid=document.activeElement&&document.activeElement.id;
+  $("#app").innerHTML=!user?viewAuth():!prof?viewProfile():prof.role==="shop"?viewShop():viewDriver();
+  ids.forEach(i=>{const e=$("#"+i);if(e&&keep[i]!==undefined)e.value=keep[i]});
+  if(fid&&ids.includes(fid)&&$("#"+fid))$("#"+fid).focus();
+  if($("#vc")){const u=()=>{$("#fr").textContent=rs(fareOf($("#vc").value,$("#ds").value))};$("#vc").onchange=u;$("#ds").onchange=u;u()}
+}
+function showErr(){$("#app").innerHTML='<div class="card"><h2>Could not load</h2><div class="sub">Check your internet and try again.</div><div style="margin-top:12px"><button onclick="location.reload()">Try again</button></div></div>'}
+boot().catch(showErr);setTimeout(()=>{if($("#app").querySelector(".spin"))showErr()},8000);
+(()=>{const c=[];if(SUPPORT_PHONE){c.push('Phone: <a href="tel:+'+SUPPORT_PHONE+'">+'+SUPPORT_PHONE+'</a>');const w=$("#wa");w.href="https://wa.me/"+SUPPORT_PHONE;w.classList.remove("hide")}
+if(SUPPORT_EMAIL)c.push('Email: <a href="mailto:'+SUPPORT_EMAIL+'">'+SUPPORT_EMAIL+'</a>');
+$("#ctc").innerHTML=c.join("<br>")||"Contact details coming soon."})();
+</script>
+</body>
+</html>
